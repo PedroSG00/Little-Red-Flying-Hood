@@ -1,20 +1,16 @@
-class Obstacles {
-
+class Coins {
     constructor(ctx, canvasSize) {
         this.ctx = ctx
         this.canvasSize = canvasSize
         this.dimensions = {
+            size: {
+                w: 20,
+                h: 20
+            },
             pos: {
                 x: this.canvasSize.w,
                 y: Math.random() * this.canvasSize.h - 100
-            },
-            size: {
-                w: 30,
-                h: 200
-            },
-
-
-
+            }
         }
         this.init()
     }
@@ -25,10 +21,16 @@ class Obstacles {
     }
 
     draw() {
-        this.ctx.fillStyle = 'red'
+        this.ctx.fillStyle = 'yellow'
         this.ctx.fillRect(this.dimensions.pos.x, this.dimensions.pos.y, this.dimensions.size.w, this.dimensions.size.h)
+
+
     }
+
     move() {
         this.dimensions.pos.x -= 2
     }
+
+
 }
+

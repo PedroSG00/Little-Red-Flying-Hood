@@ -6,9 +6,11 @@ const app = {
     description: 'Endless-Runner of Jetpacks',
     ctx: undefined,
     fps: 60,
-    lifes: 3,
+    lifes: 1,
+    coinsCounter: 0,
     distance: 0,
     obstacles: [],
+    coins: [],
     timer: 0,
     canvasSize: {
         w: undefined,
@@ -23,6 +25,7 @@ const app = {
     init() {
         this.setDimensions();
         this.drawObstacle()
+        this.drawCoins()
         this.start()
 
     },
@@ -44,21 +47,35 @@ const app = {
 
     drawObstacle() {
         this.obstacles.push(
-            new Obstacle(this.ctx, this.canvasSize)
+            new Obstacles(this.ctx, this.canvasSize)
+        )
+    },
+
+    drawCoins() {
+        this.coins.push(
+            new Coins(this.ctx, this.canvasSize)
         )
     },
 
     drawLifes() {
         this.ctx.fillStyle = 'white'
-        this.ctx.font = '50px Arial'
+        this.ctx.font = '20px Arial'
         this.ctx.fillText(`Lifes: ${this.lifes}`, 100, 100)
     },
 
     drawDistance() {
 
         this.ctx.fillStyle = 'white'
-        this.ctx.font = '50px Arial'
-        this.ctx.fillText(`Meters: ${this.distance}`, 100, 200)
+        this.ctx.font = '20px Arial'
+        this.ctx.fillText(`Meters: ${this.distance}`, 200, 100)
+
+    },
+
+    drawCoinsCounter() {
+
+        this.ctx.fillStyle = 'white'
+        this.ctx.font = '20px Arial'
+        this.ctx.fillText(`Coins: ${this.coinsCounter}`, 300, 100)
 
     },
 
@@ -78,15 +95,22 @@ const app = {
         setInterval(() => {
 
             this.timer++
-            if (this.timer % 120 === 0) {
+            if (this.timer % 300 === 0) {
                 this.distance++
                 this.drawObstacle()
                 // console.log('holi')
             }
+
+            if (this.timer % 200 === 0) {
+                this.drawCoins()
+            }
+
             this.clearObstacles()
             this.clearAll()
             this.drawAll()
-            this.colissions()
+            this.obstacleColissions()
+            this.coinColissions()
+            this.coinsToLifeConverter()
             this.moveAll()
 
         }, 1000 / this.fps)
@@ -99,25 +123,29 @@ const app = {
 
     clearObstacles() {
         this.obstacles = this.obstacles.filter(element => element.dimensions.pos.x >= 0)
+        this.coins = this.coins.filter(element => element.dimensions.pos.x >= 0)
     },
 
     moveAll() {
         this.player.move()
         this.obstacles.forEach(element => element.move())
+        this.coins.forEach(element => element.move())
         // console.log('holi')
     },
 
     drawAll() {
         this.drawBackground()
         this.drawLifes()
+        this.drawCoinsCounter()
         this.drawDistance()
         this.player.drawPlayer()
         this.obstacles.forEach(element => element.draw())
+        this.coins.forEach(element => element.draw())
         // console.log('holi')
 
     },
 
-    colissions() {
+    obstacleColissions() {
 
         this.obstacles.forEach(element => {
             if (
@@ -126,14 +154,53 @@ const app = {
                 element.dimensions.pos.y < this.player.cardPlayer.pos.y + this.player.cardPlayer.size.h &&
                 element.dimensions.size.h + element.dimensions.pos.y > this.player.cardPlayer.pos.y
             ) {
-                this.gameOver()
+
             }
         })
     },
 
-    gameOver() {
-        clearInterval(1)
+    coinColissions() {
+        this.coins.forEach(element => {
+            if (element.dimensions.pos.x < this.player.cardPlayer.pos.x + this.player.cardPlayer.size.w &&
+                element.dimensions.pos.x + element.dimensions.size.w > this.player.cardPlayer.pos.x &&
+                element.dimensions.pos.y < this.player.cardPlayer.pos.y + this.player.cardPlayer.size.h &&
+                element.dimensions.size.h + element.dimensions.pos.y > this.player.cardPlayer.pos.y) {
+                this.coins.splice(element, 1)
+                this.coinsCounter++
+            }
+
+            // if (element.dimensions.pos.x < this.obstacles.dimensions.pos.x + this.obstacles.dimensions.size.w &&
+            //     element.dimensions.pos.x + element.dimensions.size.w > this.obstacles.dimensions.pos.x &&
+            //     element.dimensions.pos.y < this.obstacles.dimensions.pos.y + this.obstacles.dimensions.size.h &&
+            //     element.dimensions.size.h + element.dimensions.pos.y > this.obstacles.dimensions.pos.y) {
+            //     // this.coins.splice(element, 1)
+            // }
+        })
+    },
+
+    coinsToLifeConverter() {
+        if (this.lifes < 3 && this.coinsCounter === 10) {
+            this.coinsCounter = 0
+            this.lifes++
+        }
     }
+
+
+    // coinVsObstacles() {
+    //     this.obstacles.forEach(element => {
+
+
+    //         element.dimensions.pos.x < this.coin.dimensions.pos.x + this.coin.dimensions.size.w &&
+    //             element.dimensions.pos.x + element.dimensions.size.w > this.coin.dimensions.pos.x &&
+    //             element.dimensions.pos.y < this.coin.dimensions.pos.y + this.coin.dimensions.size.h &&
+    //             element.dimensions.size.h + element.dimensions.pos.y > this.coin.dimensions.pos.y
+
+    //     })
+    // },
+
+    // gameOver() {
+    //     clearInterval(1)
+    // }
 
 
 }
