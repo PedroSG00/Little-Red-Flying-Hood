@@ -28,12 +28,12 @@ class Player {
         },
 
             this.playerPhysics = {
-                gravity: .3
+                gravity: .2
             }
 
         this.playerSpeed = {
             x: 0,
-            y: 4
+            y: 6
         }
 
 
@@ -56,8 +56,8 @@ class Player {
 
 
     fly() {
-        this.cardPlayer.pos.y -= 10
-        this.playerSpeed.y -= 2
+        this.cardPlayer.pos.y -= 2
+        this.playerSpeed.y -= 3
     }
 
     setListeners() {

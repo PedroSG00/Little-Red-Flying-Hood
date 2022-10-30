@@ -26,6 +26,7 @@ const app = {
         this.setDimensions();
         this.drawObstacle()
         this.drawCoins()
+        this.acelerateGame()
         this.start()
 
     },
@@ -101,7 +102,7 @@ const app = {
                 // console.log('holi')
             }
 
-            if (this.timer % 200 === 0) {
+            if (this.timer % 324 === 0) {
                 this.drawCoins()
             }
 
@@ -111,6 +112,7 @@ const app = {
             this.obstacleColissions()
             this.coinColissions()
             this.coinsToLifeConverter()
+            this.acelerateGame()
             this.moveAll()
 
         }, 1000 / this.fps)
@@ -154,6 +156,7 @@ const app = {
                 element.dimensions.pos.y < this.player.cardPlayer.pos.y + this.player.cardPlayer.size.h &&
                 element.dimensions.size.h + element.dimensions.pos.y > this.player.cardPlayer.pos.y
             ) {
+                this.gameOver()
 
             }
         })
@@ -169,12 +172,21 @@ const app = {
                 this.coinsCounter++
             }
 
-            // if (element.dimensions.pos.x < this.obstacles.dimensions.pos.x + this.obstacles.dimensions.size.w &&
-            //     element.dimensions.pos.x + element.dimensions.size.w > this.obstacles.dimensions.pos.x &&
-            //     element.dimensions.pos.y < this.obstacles.dimensions.pos.y + this.obstacles.dimensions.size.h &&
-            //     element.dimensions.size.h + element.dimensions.pos.y > this.obstacles.dimensions.pos.y) {
-            //     // this.coins.splice(element, 1)
-            // }
+            this.coins.forEach(element => {
+                this.obstacles.forEach(eachObstacle => {
+                    if (element.dimensions.pos.x < eachObstacle.dimensions.pos.x + eachObstacle.dimensions.size.w &&
+                        element.dimensions.pos.x + element.dimensions.size.w > eachObstacle.dimensions.pos.x &&
+                        element.dimensions.pos.y < eachObstacle.dimensions.pos.y + eachObstacle.dimensions.size.h &&
+                        element.dimensions.size.h + element.dimensions.pos.y > eachObstacle.dimensions.pos.y) {
+                        console.log('Estoy pasando')
+                        this.coins.splice(element, 1)
+
+                    }
+
+
+                })
+            })
+
         })
     },
 
@@ -183,24 +195,56 @@ const app = {
             this.coinsCounter = 0
             this.lifes++
         }
+    },
+
+    // acelerateGame() {
+
+    //     let coinAceleration = 0
+    //     let obstaclesAceleration = 0
+    //     this.coins.map(element => {
+    //         if (this.distance % 2 === 0 && this.distance != 0) {
+    //             coinAceleration = element.dimensions.pos.x -= 5
+    //         }
+    //     })
+    //     this.obstacles.map(element => {
+    //         if (this.distance % 2 === 0 && this.distance != 0) {
+    //             obstaclesAceleration = element.dimensions.pos.x -= 5
+    //             console.log(obstaclesAceleration)
+    //         }
+    //     })
+
+    // },
+
+    // acelerateGame() {
+
+
+    //     this.coins.map(element => {
+    //         if (this.distance > 4) {
+    //             element.dimensions.pos.x -= 3
+    //         } else if (this.distance > 8) {
+    //             element.dimensions.pos.x -= 12
+    //         } else if (this.distance > 8) {
+    //             element.dimensions.pos.x -= 20
+    //         }
+    //     })
+    //     this.obstacles.map(element => {
+    //         if (this.distance > 4) {
+    //             element.dimensions.pos.x -= 3
+    //         } else if (this.distance > 6) {
+    //             element.dimensions.pos.x -= 12
+    //         } else if (this.distance > 8) {
+    //             element.dimensions.pos.x -= 20
+    //         }
+    //     })
+
+    // },
+
+
+
+    gameOver() {
+        clearInterval(1)
     }
 
 
-    // coinVsObstacles() {
-    //     this.obstacles.forEach(element => {
-
-
-    //         element.dimensions.pos.x < this.coin.dimensions.pos.x + this.coin.dimensions.size.w &&
-    //             element.dimensions.pos.x + element.dimensions.size.w > this.coin.dimensions.pos.x &&
-    //             element.dimensions.pos.y < this.coin.dimensions.pos.y + this.coin.dimensions.size.h &&
-    //             element.dimensions.size.h + element.dimensions.pos.y > this.coin.dimensions.pos.y
-
-    //     })
-    // },
-
-    // gameOver() {
-    //     clearInterval(1)
-    // }
-
-
 }
+

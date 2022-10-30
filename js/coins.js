@@ -1,7 +1,9 @@
 class Coins {
-    constructor(ctx, canvasSize) {
+    constructor(ctx, canvasSize, distance) {
         this.ctx = ctx
         this.canvasSize = canvasSize
+        this.distance = distance
+        this.framesCounter = 0
         this.dimensions = {
             size: {
                 w: 20,
@@ -29,7 +31,10 @@ class Coins {
 
     move() {
         this.dimensions.pos.x -= 2
+
     }
+
+
 
 
 }

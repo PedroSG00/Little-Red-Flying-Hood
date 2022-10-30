@@ -1,8 +1,9 @@
 class Obstacles {
 
-    constructor(ctx, canvasSize) {
+    constructor(ctx, canvasSize, distance) {
         this.ctx = ctx
         this.canvasSize = canvasSize
+        this.distance = distance
         this.dimensions = {
             pos: {
                 x: this.canvasSize.w,
@@ -10,7 +11,7 @@ class Obstacles {
             },
             size: {
                 w: 30,
-                h: 200
+                h: Math.random() * 300
             },
 
 
@@ -30,5 +31,8 @@ class Obstacles {
     }
     move() {
         this.dimensions.pos.x -= 2
+        if (this.distance % 2 === 0) this.dimensions.pos.x * 0.5
     }
+
 }
+
