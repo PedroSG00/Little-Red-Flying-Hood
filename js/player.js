@@ -73,7 +73,7 @@ class Player {
             if (this.keys.fly) {
                 this.canFly = true
                 this.fly()
-                console.log('subo')
+                // console.log('subo')
             }
         })
 
@@ -97,7 +97,6 @@ class Player {
             this.cardPlayer.pos.y = this.topAndFloor.top
             this.cardPlayer.pos.y += 3
             this.playerSpeed.y += 4
-
         }
     }
 

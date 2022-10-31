@@ -10,6 +10,7 @@ const app = {
     coinsCounter: 0,
     distance: 0,
     velocity: 2,
+    lastObstacle: 0,
     lifesCheck: false,
     obstacles: [],
     coins: [],
@@ -100,15 +101,18 @@ const app = {
 
         setInterval(() => {
 
+
+            this.counter = performance.now()
+
             this.timer++
-            if (this.timer % 250 === 0) {
+            if (this.timer % 170 === 0) {
                 this.distance++
                 this.drawObstacle()
                 // console.log('holi')
 
                 if (this.distance > 1) {
                     this.velocity += 0.5
-                    console.log(this.velocity)
+                    // console.log(this.velocity)
                 }
 
             }
@@ -126,6 +130,7 @@ const app = {
             this.drawAll()
             this.coinColissions()
             this.obstacleColissions()
+
             this.coinsToLifeConverter()
             this.moveAll()
 
@@ -163,44 +168,53 @@ const app = {
 
     obstacleColissions() {
 
+        let yks = 0
 
-        this.obstacles.forEach(element => {
+        this.obstacles.forEach((element, obstacleID) => {
+
             if (
                 element.dimensions.pos.x < this.player.cardPlayer.pos.x + this.player.cardPlayer.size.w &&
                 element.dimensions.pos.x + element.dimensions.size.w > this.player.cardPlayer.pos.x &&
                 element.dimensions.pos.y < this.player.cardPlayer.pos.y + this.player.cardPlayer.size.h &&
                 element.dimensions.size.h + element.dimensions.pos.y > this.player.cardPlayer.pos.y
             ) {
-                this.lifesCheck = true
-                console.log(this.lifesCheck)
+                this.lastObstacle = obstacleID
+            }
+
+            if (obstacleID != this.lastObstacle && element.dimensions.pos.x < this.player.cardPlayer.pos.x + this.player.cardPlayer.size.w &&
+                element.dimensions.pos.x + element.dimensions.size.w > this.player.cardPlayer.pos.x &&
+                element.dimensions.pos.y < this.player.cardPlayer.pos.y + this.player.cardPlayer.size.h &&
+                element.dimensions.size.h + element.dimensions.pos.y > this.player.cardPlayer.pos.y) {
+                return this.lifes--
             }
 
 
         })
-    },
-
-    restLifes() {
 
     },
+
+
+
+
 
     coinColissions() {
-        this.coins.forEach(element => {
+        this.coins.forEach((element, index) => {
             if (element.dimensions.pos.x < this.player.cardPlayer.pos.x + this.player.cardPlayer.size.w &&
                 element.dimensions.pos.x + element.dimensions.size.w > this.player.cardPlayer.pos.x &&
                 element.dimensions.pos.y < this.player.cardPlayer.pos.y + this.player.cardPlayer.size.h &&
                 element.dimensions.size.h + element.dimensions.pos.y > this.player.cardPlayer.pos.y) {
-                this.coins.splice(element, 1)
+                this.coins.splice(index, 1)
                 this.coinsCounter++
             }
 
-            this.coins.forEach(element => {
+            this.coins.forEach((element, index) => {
                 this.obstacles.forEach(eachObstacle => {
                     if (element.dimensions.pos.x < eachObstacle.dimensions.pos.x + eachObstacle.dimensions.size.w &&
                         element.dimensions.pos.x + element.dimensions.size.w > eachObstacle.dimensions.pos.x &&
                         element.dimensions.pos.y < eachObstacle.dimensions.pos.y + eachObstacle.dimensions.size.h &&
                         element.dimensions.size.h + element.dimensions.pos.y > eachObstacle.dimensions.pos.y) {
                         console.log('Estoy pasando')
-                        this.coins.splice(element, 1)
+                        this.coins.splice(index, 1)
 
                     }
 
@@ -211,12 +225,15 @@ const app = {
         })
     },
 
+
     coinsToLifeConverter() {
         if (this.lifes < 3 && this.coinsCounter === 10) {
             this.coinsCounter = 0
             this.lifes++
         }
     },
+
+
 
 
     // acelerateGame() {

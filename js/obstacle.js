@@ -29,6 +29,10 @@ class Obstacles {
         this.ctx.fillStyle = 'red'
         this.ctx.fillRect(this.dimensions.pos.x, this.dimensions.pos.y, this.dimensions.size.w, this.dimensions.size.h)
     }
+    drawInvisibleRect() {
+        this.ctx.fillRect(this.dimensions.pos.x, this.dimensions.pos.y, this.dimensions.size.w, this.dimensions.size.h)
+    }
+
     move() {
         this.dimensions.pos.x -= this.velocity
     }
