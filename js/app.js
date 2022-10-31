@@ -6,9 +6,11 @@ const app = {
     description: 'Endless-Runner of Jetpacks',
     ctx: undefined,
     fps: 60,
-    lifes: 1,
+    lifes: 3,
     coinsCounter: 0,
     distance: 0,
+    velocity: 2,
+    lifesCheck: false,
     obstacles: [],
     coins: [],
     timer: 0,
@@ -17,16 +19,17 @@ const app = {
         h: undefined,
     },
 
+
+
     keys: {
 
-        fly: 'SPACE',
+        fly: ' ',
         // goDown: 'ArrowDown'
     },
     init() {
         this.setDimensions();
         this.drawObstacle()
         this.drawCoins()
-        this.acelerateGame()
         this.start()
 
     },
@@ -48,13 +51,13 @@ const app = {
 
     drawObstacle() {
         this.obstacles.push(
-            new Obstacles(this.ctx, this.canvasSize)
+            new Obstacles(this.ctx, this.canvasSize, this.velocity)
         )
     },
 
     drawCoins() {
         this.coins.push(
-            new Coins(this.ctx, this.canvasSize)
+            new Coins(this.ctx, this.canvasSize, this.velocity)
         )
     },
 
@@ -83,7 +86,7 @@ const app = {
     reset() {
 
         this.drawBackground()
-        this.player = new Player(this.ctx, this.keys)
+        this.player = new Player(this.ctx, this.keys, this.canvasSize)
         this.obstacles = []
 
     },
@@ -93,26 +96,37 @@ const app = {
 
         this.reset()
 
+
+
         setInterval(() => {
 
             this.timer++
-            if (this.timer % 300 === 0) {
+            if (this.timer % 250 === 0) {
                 this.distance++
                 this.drawObstacle()
                 // console.log('holi')
+
+                if (this.distance > 1) {
+                    this.velocity += 0.5
+                    console.log(this.velocity)
+                }
+
             }
 
             if (this.timer % 324 === 0) {
                 this.drawCoins()
             }
 
+            if (this.lifesCheck === true) {
+
+            }
+
             this.clearObstacles()
             this.clearAll()
             this.drawAll()
-            this.obstacleColissions()
             this.coinColissions()
+            this.obstacleColissions()
             this.coinsToLifeConverter()
-            this.acelerateGame()
             this.moveAll()
 
         }, 1000 / this.fps)
@@ -149,6 +163,7 @@ const app = {
 
     obstacleColissions() {
 
+
         this.obstacles.forEach(element => {
             if (
                 element.dimensions.pos.x < this.player.cardPlayer.pos.x + this.player.cardPlayer.size.w &&
@@ -156,10 +171,16 @@ const app = {
                 element.dimensions.pos.y < this.player.cardPlayer.pos.y + this.player.cardPlayer.size.h &&
                 element.dimensions.size.h + element.dimensions.pos.y > this.player.cardPlayer.pos.y
             ) {
-                this.gameOver()
-
+                this.lifesCheck = true
+                console.log(this.lifesCheck)
             }
+
+
         })
+    },
+
+    restLifes() {
+
     },
 
     coinColissions() {
@@ -197,6 +218,7 @@ const app = {
         }
     },
 
+
     // acelerateGame() {
 
     //     let coinAceleration = 0
@@ -220,26 +242,35 @@ const app = {
 
     //     this.coins.map(element => {
     //         if (this.distance > 4) {
-    //             element.dimensions.pos.x -= 3
-    //         } else if (this.distance > 8) {
+    //             this.velocity = 10
+    //         }
+    //         if (this.distance > 8) {
     //             element.dimensions.pos.x -= 12
-    //         } else if (this.distance > 8) {
+    //         }
+
+    //         if (this.distance > 12) {
     //             element.dimensions.pos.x -= 20
     //         }
     //     })
     //     this.obstacles.map(element => {
     //         if (this.distance > 4) {
     //             element.dimensions.pos.x -= 3
-    //         } else if (this.distance > 6) {
+    //         }
+    //         if (this.distance > 8) {
     //             element.dimensions.pos.x -= 12
-    //         } else if (this.distance > 8) {
+    //         }
+    //         if (this.distance > 12) {
     //             element.dimensions.pos.x -= 20
     //         }
     //     })
 
     // },
 
-
+    // restLifes() {
+    //     if (this.lifesCheck = true) {
+    //         this.lifes--
+    //     }
+    // },
 
     gameOver() {
         clearInterval(1)

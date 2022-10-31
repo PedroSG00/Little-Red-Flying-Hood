@@ -2,8 +2,13 @@ class Player {
     constructor(ctx, keys, canvasSize) {
         this.ctx = ctx
         this.keys = keys
+        this.canvasSize = canvasSize
         this.lifes = 3
-
+        this.topAndFloor = {
+            top: 100,
+            floor: this.canvasSize.h - 100,
+        }
+        this.canFly = false
         this.cardPlayer = {
 
             size: {
@@ -37,16 +42,13 @@ class Player {
         }
 
 
-
-
-
-
         this.init()
     }
 
     init() {
         this.drawPlayer()
         this.setListeners()
+        this.move()
     }
 
     drawPlayer() {
@@ -56,16 +58,30 @@ class Player {
 
 
     fly() {
-        this.cardPlayer.pos.y -= 2
-        this.playerSpeed.y -= 3
+
+        if (this.canFly === true) {
+            this.cardPlayer.pos.y -= 3
+            this.playerSpeed.y -= 4
+
+        }
+
+
     }
 
     setListeners() {
         document.addEventListener("keydown", e => {
             if (this.keys.fly) {
+                this.canFly = true
                 this.fly()
                 console.log('subo')
             }
+        })
+
+        document.addEventListener('keyup', e => {
+            if (!this.keys.fly) {
+                this.canFly === false
+            }
+
         })
     }
 
@@ -77,8 +93,11 @@ class Player {
             this.cardPlayer.pos.y = this.cardPlayer.initPos.y
         }
 
-        if (this.cardPlayer.pos.y <= 100) {
-            this.cardPlayer.pos.y = 100
+        if (this.cardPlayer.pos.y <= this.topAndFloor.top) {
+            this.cardPlayer.pos.y = this.topAndFloor.top
+            this.cardPlayer.pos.y += 3
+            this.playerSpeed.y += 4
+
         }
     }
 

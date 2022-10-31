@@ -1,9 +1,9 @@
 class Obstacles {
 
-    constructor(ctx, canvasSize, distance) {
+    constructor(ctx, canvasSize, velocity) {
         this.ctx = ctx
         this.canvasSize = canvasSize
-        this.distance = distance
+        this.velocity = velocity
         this.dimensions = {
             pos: {
                 x: this.canvasSize.w,
@@ -30,8 +30,7 @@ class Obstacles {
         this.ctx.fillRect(this.dimensions.pos.x, this.dimensions.pos.y, this.dimensions.size.w, this.dimensions.size.h)
     }
     move() {
-        this.dimensions.pos.x -= 2
-        if (this.distance % 2 === 0) this.dimensions.pos.x * 0.5
+        this.dimensions.pos.x -= this.velocity
     }
 
 }
