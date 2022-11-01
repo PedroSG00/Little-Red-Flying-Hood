@@ -10,7 +10,8 @@ const app = {
     coinsCounter: 0,
     distance: 0,
     velocity: 2,
-    lastObstacle: 0,
+    colTime: 0,
+    lastObstacle: -1,
     lifesCheck: false,
     obstacles: [],
     coins: [],
@@ -102,16 +103,17 @@ const app = {
         setInterval(() => {
 
 
-            this.counter = performance.now()
+
 
             this.timer++
             if (this.timer % 170 === 0) {
                 this.distance++
                 this.drawObstacle()
+
                 // console.log('holi')
 
                 if (this.distance > 1) {
-                    this.velocity += 0.5
+                    this.velocity += 0.2
                     // console.log(this.velocity)
                 }
 
@@ -130,7 +132,7 @@ const app = {
             this.drawAll()
             this.coinColissions()
             this.obstacleColissions()
-
+            this.gameOver()
             this.coinsToLifeConverter()
             this.moveAll()
 
@@ -143,7 +145,10 @@ const app = {
     },
 
     clearObstacles() {
+        const before = this.obstacles.length
         this.obstacles = this.obstacles.filter(element => element.dimensions.pos.x >= 0)
+        const after = this.obstacles.length
+        this.lastObstacle -= (before - after)
         this.coins = this.coins.filter(element => element.dimensions.pos.x >= 0)
     },
 
@@ -168,27 +173,30 @@ const app = {
 
     obstacleColissions() {
 
-        let yks = 0
 
-        this.obstacles.forEach((element, obstacleID) => {
 
-            if (
-                element.dimensions.pos.x < this.player.cardPlayer.pos.x + this.player.cardPlayer.size.w &&
+        this.obstacles.some((element, obstacleID) => {
+
+
+
+
+            if (element.dimensions.pos.x < this.player.cardPlayer.pos.x + this.player.cardPlayer.size.w &&
                 element.dimensions.pos.x + element.dimensions.size.w > this.player.cardPlayer.pos.x &&
                 element.dimensions.pos.y < this.player.cardPlayer.pos.y + this.player.cardPlayer.size.h &&
                 element.dimensions.size.h + element.dimensions.pos.y > this.player.cardPlayer.pos.y
             ) {
-                this.lastObstacle = obstacleID
+
+                console.log(obstacleID)
+                if (this.lastObstacle !== obstacleID) {
+                    this.lifes--
+                    this.lastObstacle = obstacleID
+                }
+
+            } else {
+                if (this.lastObstacle === obstacleID) {
+                    this.lastObstacle = -1
+                }
             }
-
-            if (obstacleID != this.lastObstacle && element.dimensions.pos.x < this.player.cardPlayer.pos.x + this.player.cardPlayer.size.w &&
-                element.dimensions.pos.x + element.dimensions.size.w > this.player.cardPlayer.pos.x &&
-                element.dimensions.pos.y < this.player.cardPlayer.pos.y + this.player.cardPlayer.size.h &&
-                element.dimensions.size.h + element.dimensions.pos.y > this.player.cardPlayer.pos.y) {
-                return this.lifes--
-            }
-
-
         })
 
     },
@@ -227,7 +235,7 @@ const app = {
 
 
     coinsToLifeConverter() {
-        if (this.lifes < 3 && this.coinsCounter === 10) {
+        if (this.lifes < 3 && this.coinsCounter === 3) {
             this.coinsCounter = 0
             this.lifes++
         }
@@ -290,7 +298,7 @@ const app = {
     // },
 
     gameOver() {
-        clearInterval(1)
+        if (this.lifes === 0) { clearInterval(1) }
     }
 
 

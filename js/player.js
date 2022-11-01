@@ -8,6 +8,14 @@ class Player {
             top: 100,
             floor: this.canvasSize.h - 100,
         }
+
+        this.image = new Image();
+        this.image.src = "./../img\AnimationSheet_Character.png";
+        this.image.frames = 3;
+        this.image.framesIndex = 0;
+
+
+
         this.canFly = false
         this.cardPlayer = {
 
