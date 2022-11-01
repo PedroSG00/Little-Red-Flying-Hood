@@ -1,9 +1,9 @@
 class Coins {
-    constructor(ctx, canvasSize, velocity) {
+    constructor(ctx, canvasSize, velocity, timer) {
         this.ctx = ctx
         this.canvasSize = canvasSize
         this.velocity = velocity
-        this.framesCounter = 0
+        this.timer = timer
         this.dimensions = {
             size: {
                 w: 20,
@@ -14,17 +14,36 @@ class Coins {
                 y: Math.random() * this.canvasSize.h - 100
             }
         }
+
+        this.image = new Image();
+        this.image.src = "./img/coin.png";
+        this.image.rows = 6;
+        this.image.rowsIndex = 0;
+
+
         this.init()
     }
 
     init() {
         this.draw()
         this.move()
+
     }
 
-    draw() {
-        this.ctx.fillStyle = 'yellow'
-        this.ctx.fillRect(this.dimensions.pos.x, this.dimensions.pos.y, this.dimensions.size.w, this.dimensions.size.h)
+    draw(timer) {
+        this.ctx.drawImage(
+            this.image,
+            this.image.rowsIndex * (this.image.width / this.image.rows),
+            0,
+            this.image.width / this.image.rows,
+            this.image.height,
+            this.dimensions.pos.x,
+            this.dimensions.pos.y,
+            35,
+            35
+        )
+
+        this.coinAnimation(timer)
 
 
     }
@@ -33,6 +52,18 @@ class Coins {
         this.dimensions.pos.x -= this.velocity
 
     }
+
+    coinAnimation(timer) {
+        if (timer % 5 == 0) {
+            this.image.rowsIndex++
+        }
+
+        if (this.image.rowsIndex >= this.image.rows) {
+            this.image.rowsIndex = 0
+        }
+    }
+
+
 
 
 

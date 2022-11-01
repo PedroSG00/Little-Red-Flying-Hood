@@ -6,9 +6,11 @@ const app = {
     description: 'Endless-Runner of Jetpacks',
     ctx: undefined,
     fps: 60,
+    background: undefined,
     lifes: 3,
     coinsCounter: 0,
     distance: 0,
+    framesCounter: 0,
     velocity: 2,
     colTime: 0,
     lastObstacle: -1,
@@ -59,7 +61,7 @@ const app = {
 
     drawCoins() {
         this.coins.push(
-            new Coins(this.ctx, this.canvasSize, this.velocity)
+            new Coins(this.ctx, this.canvasSize, this.velocity, this.timer)
         )
     },
 
@@ -87,8 +89,8 @@ const app = {
 
     reset() {
 
-        this.drawBackground()
-        this.player = new Player(this.ctx, this.keys, this.canvasSize)
+        this.background = new Background(this.ctx, this.canvasSize, this.velocity)
+        this.player = new Player(this.ctx, this.keys, this.canvasSize, this.timer)
         this.obstacles = []
 
     },
@@ -101,7 +103,6 @@ const app = {
 
 
         setInterval(() => {
-
 
 
 
@@ -123,16 +124,14 @@ const app = {
                 this.drawCoins()
             }
 
-            if (this.lifesCheck === true) {
-
-            }
-
             this.clearObstacles()
             this.clearAll()
             this.drawAll()
             this.coinColissions()
             this.obstacleColissions()
-            this.gameOver()
+            if (this.lifes === 0) {
+                this.gameOver()
+            }
             this.coinsToLifeConverter()
             this.moveAll()
 
@@ -160,13 +159,13 @@ const app = {
     },
 
     drawAll() {
-        this.drawBackground()
+        this.background.draw()
         this.drawLifes()
         this.drawCoinsCounter()
         this.drawDistance()
-        this.player.drawPlayer()
+        this.player.drawPlayer(this.timer)
         this.obstacles.forEach(element => element.draw())
-        this.coins.forEach(element => element.draw())
+        this.coins.forEach(element => element.draw(this.timer))
         // console.log('holi')
 
     },
@@ -244,61 +243,15 @@ const app = {
 
 
 
-    // acelerateGame() {
-
-    //     let coinAceleration = 0
-    //     let obstaclesAceleration = 0
-    //     this.coins.map(element => {
-    //         if (this.distance % 2 === 0 && this.distance != 0) {
-    //             coinAceleration = element.dimensions.pos.x -= 5
-    //         }
-    //     })
-    //     this.obstacles.map(element => {
-    //         if (this.distance % 2 === 0 && this.distance != 0) {
-    //             obstaclesAceleration = element.dimensions.pos.x -= 5
-    //             console.log(obstaclesAceleration)
-    //         }
-    //     })
-
-    // },
-
-    // acelerateGame() {
-
-
-    //     this.coins.map(element => {
-    //         if (this.distance > 4) {
-    //             this.velocity = 10
-    //         }
-    //         if (this.distance > 8) {
-    //             element.dimensions.pos.x -= 12
-    //         }
-
-    //         if (this.distance > 12) {
-    //             element.dimensions.pos.x -= 20
-    //         }
-    //     })
-    //     this.obstacles.map(element => {
-    //         if (this.distance > 4) {
-    //             element.dimensions.pos.x -= 3
-    //         }
-    //         if (this.distance > 8) {
-    //             element.dimensions.pos.x -= 12
-    //         }
-    //         if (this.distance > 12) {
-    //             element.dimensions.pos.x -= 20
-    //         }
-    //     })
-
-    // },
-
-    // restLifes() {
-    //     if (this.lifesCheck = true) {
-    //         this.lifes--
-    //     }
-    // },
 
     gameOver() {
-        if (this.lifes === 0) { clearInterval(1) }
+
+        this.player.deadAnimation(this.timer)
+
+        setTimeout(() => {
+            clearInterval(1)
+        }, 2000)
+
     }
 
 
