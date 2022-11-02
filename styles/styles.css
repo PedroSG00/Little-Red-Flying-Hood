@@ -6,3 +6,11 @@
 body {
     overflow: hidden;
 }
+
+.start {
+    display: block;
+}
+
+/* .canvasScreen {
+    display: none;
+} */

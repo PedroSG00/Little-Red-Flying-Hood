@@ -3,7 +3,7 @@ class Player {
         this.ctx = ctx
         this.keys = keys
         this.canvasSize = canvasSize
-        this.lifes = 3
+        this.isAlive = true
         this.timer = timer
         this.topAndFloor = {
             top: 100,
@@ -67,7 +67,7 @@ class Player {
         this.ctx.drawImage(
             this.image,
             this.image.colsIndex * (this.image.width / this.image.cols),
-            this.image.rowsIndex * (this.image.height / this.image.rows),
+            this.image.rowsIndex * (this.image.height / this.image.rows + 0.3),
             this.image.width / this.image.cols,
             this.image.height / this.image.rows,
             this.cardPlayer.pos.x,
@@ -76,17 +76,18 @@ class Player {
             100
         )
 
-        this.moveAnimation(timer)
-        this.jumpAnimation(timer)
+        if (this.isAlive) { this.moveAnimation(timer) } else { this.deadAnimation(timer) }
+
+
 
     }
 
 
     fly() {
 
-        if (this.canFly === true) {
+        if (this.canFly === true && this.isAlive === true) {
             this.cardPlayer.pos.y -= 3
-            this.playerSpeed.y -= 4
+            this.playerSpeed.y = -4
 
         }
 
@@ -106,7 +107,7 @@ class Player {
         document.addEventListener('keyup', e => {
             if (!this.keys.fly) {
                 this.canFly === false
-                this.fallAnimation(this.timer)
+
             }
 
         })
@@ -122,8 +123,8 @@ class Player {
 
         if (this.cardPlayer.pos.y <= this.topAndFloor.top) {
             this.cardPlayer.pos.y = this.topAndFloor.top
-            this.cardPlayer.pos.y += 3
-            this.playerSpeed.y += 4
+            this.cardPlayer.pos.y += 1
+            this.playerSpeed.y += 1
         }
     }
 
@@ -140,11 +141,6 @@ class Player {
             this.image.colsIndex = 0
         }
 
-
-    }
-
-    jumpAnimation(timer) {
-
         if (this.cardPlayer.pos.y !== this.cardPlayer.initPos.y)
             if (timer % 10 == 0) {
                 this.image.rowsIndex = 5;
@@ -154,6 +150,9 @@ class Player {
         if (this.image.colsIndex >= this.image.cols) {
             this.image.colsIndex = 0
         }
+
+
+
     }
 
     // fallAnimation(timer) {
@@ -173,14 +172,17 @@ class Player {
 
 
     deadAnimation(timer) {
-        if (timer % 333 === 0) {
+
+        if (timer % 25 === 0) {
             this.image.rowsIndex = 7;
             this.image.colsIndex++
         }
 
-        if (this.image.colsIndex >= this.image.cols) {
+        if (this.image.colsIndex >= 7) {
             this.image.colsIndex = 7;
         }
+        console.log(this.image.colsIndex)
+
 
 
     }

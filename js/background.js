@@ -2,7 +2,7 @@ class Background {
     constructor(ctx, canvasSize, velocity) {
         this.ctx = ctx;
         this.canvasSize = canvasSize
-
+        this.isAlive = true
         this.image = new Image();
         this.image.src = './img/Flat Night 2 BG.png'
         this.dimensions = {
@@ -25,7 +25,9 @@ class Background {
             this.dimensions.size.w, this.dimensions.size.h)
         this.ctx.drawImage(this.image, this.dimensions.position.x + this.dimensions.size.w,
             this.dimensions.position.y, this.dimensions.size.w, this.dimensions.size.h);
-        this.move()
+
+        if (this.isAlive = true) { this.move() }
+
     }
 
     move() {
@@ -35,4 +37,6 @@ class Background {
         }
         this.dimensions.position.x -= this.velocity
     }
+
+
 } 

@@ -11,7 +11,7 @@ class Coins {
             },
             pos: {
                 x: this.canvasSize.w,
-                y: Math.random() * this.canvasSize.h - 100
+                y: Math.floor(Math.random() * ((canvasSize.h - 200) - 100 + 1) + 100)
             }
         }
 
