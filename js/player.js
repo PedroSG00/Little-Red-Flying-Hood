@@ -4,6 +4,7 @@ class Player {
         this.keys = keys
         this.canvasSize = canvasSize
         this.isAlive = true
+        this.hit = false
         this.timer = timer
         this.topAndFloor = {
             top: 100,
@@ -17,7 +18,7 @@ class Player {
         this.image.colsIndex = 0;
         this.image.rowsIndex = 0;
 
-        this.canFly = false
+
         this.cardPlayer = {
             size: {
                 w: 50,
@@ -58,6 +59,7 @@ class Player {
         this.setListeners()
         this.move()
 
+
     }
 
     drawPlayer(timer) {
@@ -79,37 +81,63 @@ class Player {
         if (this.isAlive) { this.moveAnimation(timer) } else { this.deadAnimation(timer) }
 
 
-
     }
 
 
     fly() {
 
-        if (this.canFly === true && this.isAlive === true) {
-            this.cardPlayer.pos.y -= 3
-            this.playerSpeed.y = -4
 
-        }
+        this.cardPlayer.pos.y -= 3
+        this.playerSpeed.y = -4
+        console.log('klkklk')
+
+
 
 
     }
 
+    goDown() {
+
+
+        this.cardPlayer.pos.y += 5
+        this.playerSpeed.y = 6
+
+
+
+
+
+    }
+
+
+
     setListeners() {
         document.addEventListener("keydown", e => {
-            if (this.keys.fly) {
-                this.canFly = true
-                this.fly()
+            switch (e.key) {
+                case this.keys.fly.key:
+                    this.keys.fly.pressed === true
+                    this.fly()
+                    // console.log('klk')
+                    break;
 
-                // console.log('subo')
+                case this.keys.goDown.key:
+                    this.keys.fly.pressed === true
+                    this.goDown()
+                    break;
+
             }
         })
 
         document.addEventListener('keyup', e => {
-            if (!this.keys.fly) {
-                this.canFly === false
+            switch (e.key) {
+                case this.keys.fly.key:
+                    this.keys.fly.pressed === false
+                    break;
+                case this.keys.goDown.key:
+                    this.keys.goDown.pressed === false
+                    break;
+
 
             }
-
         })
     }
 
@@ -155,22 +183,6 @@ class Player {
 
     }
 
-    // fallAnimation(timer) {
-
-
-    //     if (timer % 30 == 0) {
-    //         this.image.rowsIndex = 5;
-    //         this.image.colsIndex = 4
-    //         this.image.colsIndex
-    //     }
-
-    //     if (this.image.colsIndex <= 7) {
-    //         this.image.colsIndex = 7
-    //     }
-
-    // }
-
-
     deadAnimation(timer) {
 
         if (timer % 25 === 0) {
@@ -187,20 +199,20 @@ class Player {
 
     }
 
+    damageAnimation(timer) {
+        if (timer % 10 === 0) {
+            this.image.rowsIndex = 6;
+            this.image.colsIndex++
+        }
+
+        if (this.image.colsIndex >= 2) {
+            this.image.colsIndex = 0;
+        }
+        console.log(this.image.colsIndex)
+    }
+
 
 
 
 }
 
-// move() {
-
-//     if (this.camelPos.x >= this.canvasSize.w - this.camelSize.w) {
-//         this.camelSpeed *= -1
-//     }
-
-//     if (this.camelPos.x < 0) {
-//         this.camelSpeed *= -1
-//     }
-
-//     this.camelPos.x += this.camelSpeed
-// }

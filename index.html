@@ -5,30 +5,53 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Little Red Flying Hood</title>
+
+
+
     <link rel="stylesheet" href="./styles/styles.css">
+
+
+
 
 </head>
 
 <body>
 
-    <div class='start'>
+    <div id='start'>
+        <div class="otherdiv">
+            <div class='flexdiv'>
+                <h1>Little <span>Red</span> Flying Hood</h1>
+                <button id="start-button">Play!</button>
+                <ul class="controls">
+                    <li>Fly: <span>Space</span> </li>
+                    <li>Fall Faster: <span>Arrow Down</span></li>
+                </ul>
 
-        <a href="">polla</a>
+            </div>
+        </div>
+
 
     </div>
 
 
-    <div class='canvasScreen'>
+    <div class='canvasScreen hidden'>
         <canvas id="canvas"></canvas>
+
     </div>
 
 
 
-    <div class="game-over">
-    </div>
 
 
+    <!--  <h1>You <span>Dead</span></h1>
+                <h3>SCORE</h3>
+                <h4>Tu awela estaria orgullosa klk </h4> -->
+
+
+
+
+    <script src="./js/powerDown.js"></script>
     <script src="./js/floor.js"></script>
     <script src="./js/coins.js"></script>
     <script src="./js/ghost.js"></script>

@@ -29,11 +29,11 @@ class Boxes {
     draw() {
         this.ctx.beginPath()
         this.ctx.fillStyle = '#473d69'
-        this.ctx.fillRect(this.dimensions.pos.x, this.dimensions.pos.y - this.dimensions.size.h, this.dimensions.size.w, this.dimensions.size.h)
+        this.ctx.fillRect(this.dimensions.pos.x, this.dimensions.pos.y, this.dimensions.size.w, this.dimensions.size.h)
 
         this.ctx.strokeStyle = 'red'
         this.ctx.lineWidth = 7
-        this.ctx.rect(this.dimensions.pos.x, this.dimensions.pos.y - this.dimensions.size.h, this.dimensions.size.w, this.dimensions.size.h)
+        this.ctx.rect(this.dimensions.pos.x, this.dimensions.pos.y, this.dimensions.size.w, this.dimensions.size.h)
 
         this.ctx.stroke()
         this.ctx.closePath()
@@ -42,10 +42,10 @@ class Boxes {
 
     move() {
         this.dimensions.pos.x -= this.velocity
-        if (this.dimensions.pos.y >= this.canvasSize.h - 100) {
+        if (this.dimensions.pos.y >= this.canvasSize.h - this.dimensions.size.h - 80) {
             this.boxSpeed *= -1
         }
-        if (this.dimensions.pos.y < 300) {
+        if (this.dimensions.pos.y < 100) {
             this.boxSpeed *= -1
         }
 
