@@ -4,13 +4,11 @@ class Player {
         this.keys = keys
         this.canvasSize = canvasSize
         this.isAlive = true
-        this.hit = false
         this.timer = timer
         this.topAndFloor = {
             top: 100,
             floor: this.canvasSize.h - 100,
         }
-
         this.image = new Image();
         this.image.src = "./img/AnimationSheet_Character.png";
         this.image.cols = 8;
@@ -199,17 +197,7 @@ class Player {
 
     }
 
-    damageAnimation(timer) {
-        if (timer % 10 === 0) {
-            this.image.rowsIndex = 6;
-            this.image.colsIndex++
-        }
 
-        if (this.image.colsIndex >= 2) {
-            this.image.colsIndex = 0;
-        }
-        console.log(this.image.colsIndex)
-    }
 
 
 

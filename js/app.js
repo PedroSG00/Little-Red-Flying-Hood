@@ -26,6 +26,7 @@ const app = {
     powerDown: [],
     timer: 0,
     gameOverSound: new Audio('./sound/gameover.mp3'),
+
     musicBackground: new Audio('./sound/spookymusic.mp3'),
     canvasSize: {
         w: undefined,
@@ -46,6 +47,8 @@ const app = {
         this.setDimensions()
 
         this.start()
+        this.musicBackground.loop = true
+        this.musicBackground.volume = 0.07
         this.musicBackground.play()
     },
     setDimensions() {
@@ -72,9 +75,7 @@ const app = {
         )
     },
     drawCoins() {
-        this.coins.push(
-            new Coins(this.ctx, this.canvasSize, this.velocity, this.timer)
-        )
+        this.coins.push(new Coins(this.ctx, this.canvasSize, this.velocity, this.timer))
     },
 
     drawPowerDown() {
@@ -266,6 +267,7 @@ const app = {
                     this.lastObstacle = obstacleID
 
                     let ghostSound = new Audio('./sound/hurt.wav')
+                    ghostSound.volume = 0.2
                     ghostSound.play()
 
                     console.log('---- VIDAS ----', this.lifes)
@@ -291,6 +293,7 @@ const app = {
                 this.coins.splice(element[index], 1)
                 this.coinsCounter++
                 let coinsSound = new Audio('./sound/coin.mp3')
+                coinsSound.volume = 0.3
                 coinsSound.play()
             }
 
@@ -320,6 +323,7 @@ const app = {
                 this.powerDown.splice(element[index], 1)
                 this.lifes = 0
                 let powerDownSound = new Audio('./sound/hurt.wav')
+                powerDownSound.volume = 0.2
                 powerDownSound.play()
             }
 
@@ -341,6 +345,7 @@ const app = {
                     this.lifes--
                     this.lastBox = index
                     let boxSound = new Audio('./sound/hurt.wav')
+                    boxSound.volume = 0.2
                     boxSound.play()
 
                 }
@@ -376,6 +381,7 @@ const app = {
         this.canColission = false
         this.player.deadAnimation(this.timer)
         this.musicBackground.pause()
+        this.gameOverSound.volume = 0.1
         this.gameOverSound.play()
 
 
